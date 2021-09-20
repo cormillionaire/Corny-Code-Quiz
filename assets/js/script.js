@@ -7,7 +7,8 @@ let quizQuestion = document.querySelector('#question');
 let quizAnswer = document.querySelector('.answers');
 let startBttn = document.querySelector(".start-button");
 let highScoreCapture = document.querySelector('#highScoreSubmit');
-let timeLeft = 10;
+let storeScore = document.querySelector('#intialsSubmit');
+let timeLeft = 20;
 let timeInterval;
 
 //Question answer objects
@@ -36,7 +37,8 @@ let quiz4 = {
 let quizObjectArray = [quiz1, quiz2, quiz3, quiz4]
 
 //Funciton to start timer and show first question
-function timer(timeLeft) {
+//removed timeLeft as var
+function timer() {
     timeInterval = setInterval(function () {
         // As long as the `timeLeft` is greater than 1
         if (timeLeft >= 0) {
@@ -55,14 +57,14 @@ function timer(timeLeft) {
     console.log(timeLeft)
 }
 
-function stopTimer(){
+function stopTimer() {
     clearInterval(timeInterval);
 }
 
 function startQuiz() {
     //Hide quiz start
     quizStart.setAttribute("style", "display:none");
-    timer(timeLeft);
+    timer();
     console.log("start quiz running")
     //Show random question/answer combo on page
     displayQuestion(0);
@@ -112,18 +114,18 @@ function checkAnswer(ansNumSelected, quizArrayIndex) {
     }
     //take in question
     let quiz = quizObjectArray[quizArrayIndex];
-    console.log("quiz num" + quiz);
     console.log("quiz answer" + quiz.answerCorrect);
     console.log(ansNumSelected);
     //if li answer is equal to the answer index
     if (ansNumSelected === quiz.answerCorrect) {
-        document.querySelector("#result").textContent = "Correct!";
+        document.querySelector("#result").innerHTML = "<hr> Correct!";
     } else {
-        document.querySelector("#result").textContent = "Wrong!";
+        document.querySelector("#result").innerHTML = "<hr> Wrong!";
         timeLeft = timeLeft - 10;
+        timerCount.textContent = timeLeft;
     }
     //local storage for time and output score
-    localStorage.setItem("Score", timeLeft);
+    console.log("timeleft: " + timeLeft)
     deleteQuestion();
     quizArrayIndex++;
     displayQuestion(quizArrayIndex);
@@ -137,18 +139,31 @@ function endQuiz() {
     quizStart.setAttribute("style", "display:block");
     startBttn.setAttribute("style", "display:none");
     quizTitle.textContent = "All Done!";
-    quizInfo.textContent = "Give your initials for your high score";
+    //show score and capture name, and persist in local storage
+    quizInfo.textContent = "Give your initials for your high score of " + localStorage.getItem("Final Score");
     highScoreCapture.setAttribute("style", "display:block");
-    
 }
 
 //Include persistent storage for end result
-
-//Function to show score and capture name, and persist in local storage
+storeScore.addEventListener("click", function (event) {
+    event.preventDefault();
+    let userName = document.querySelector("#last-name").value;
+    var allScores = JSON.parse(localStorage.getItem("allScores"));
+    if (allScores == null) { allScores = []; 
+    }
+    localStorage.setItem("Initials", userName);
+    var userScore = {
+        user: localStorage.getItem("Initials"),
+        score: localStorage.getItem("Final Score")
+    }
+    localStorage.setItem("userScore", JSON.stringify(userScore));
+    allScores.push(userScore);
+    localStorage.setItem("allScores", JSON.stringify(allScores));
+    location.href = "./highscore/highscore.html";
+});
 
 //Event to kick everything off
 startBttn.addEventListener("click", function () {
     startQuiz();
 });
 
-//**High Scores**//

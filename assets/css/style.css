@@ -8,12 +8,20 @@ header {
     justify-content: space-between;
     text-align: center;
 }
+
+hr {
+    height: .5px;
+    border: none;
+    background-color: #7E7E7E;
+}
+
 .timer {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     padding: 10px;
 }
+
 
 #highScoreSubmit {
     display: none;
