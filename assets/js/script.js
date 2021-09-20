@@ -1,11 +1,14 @@
 let timerCount = document.querySelector('.timer-count');
 let quizStart = document.querySelector('#quizSummary');
 let quizMain = document.querySelector('#quizMain');
+let quizTitle = document.querySelector('#quizTitle');
+let quizInfo = document.querySelector('#quizInfo');
 let quizQuestion = document.querySelector('#question');
 let quizAnswer = document.querySelector('.answers');
 let startBttn = document.querySelector(".start-button");
-let highScoreCapture = document.querySelector('.highScoreSubmit');
-let timeLeft = 100;
+let highScoreCapture = document.querySelector('#highScoreSubmit');
+let timeLeft = 10;
+let timeInterval;
 
 //Question answer objects
 let quiz1 = {
@@ -33,25 +36,33 @@ let quiz4 = {
 let quizObjectArray = [quiz1, quiz2, quiz3, quiz4]
 
 //Funciton to start timer and show first question
-function timer(event) {
-    let timeInterval = setInterval(function () {
+function timer(timeLeft) {
+    timeInterval = setInterval(function () {
         // As long as the `timeLeft` is greater than 1
-        if (timeLeft > 1) {
+        if (timeLeft >= 0) {
             timerCount.textContent = timeLeft;
             timeLeft--;
             // If timer reaches 0 before end of quiz, throw failure message to start over
         } else {
-            timerCount.textContent = '';
             clearInterval(timeInterval);
+            deleteQuestion();
+            quizStart.setAttribute("style", "display:block");
+            quizTitle.textContent = "Times Up!";
+            quizInfo.textContent = "You weren't able to finish on time. You should try again."
         }
     }, 1000);
     console.log("timer running")
+    console.log(timeLeft)
+}
+
+function stopTimer(){
+    clearInterval(timeInterval);
 }
 
 function startQuiz() {
     //Hide quiz start
     quizStart.setAttribute("style", "display:none");
-    timer();
+    timer(timeLeft);
     console.log("start quiz running")
     //Show random question/answer combo on page
     displayQuestion(0);
@@ -93,9 +104,9 @@ function displayQuestion(quizArrayIndex) {
 
 //Function to find and state and store correct or wrong
 function checkAnswer(ansNumSelected, quizArrayIndex) {
-    if (quizArrayIndex === quizObjectArray.length - 1){
-        console.log("quiz#"+quizArrayIndex)
-        console.log("num"+quizObjectArray.length)
+    if (quizArrayIndex === quizObjectArray.length - 1) {
+        console.log("quiz#" + quizArrayIndex)
+        console.log("num" + quizObjectArray.length)
         endQuiz();
         return;
     }
@@ -116,19 +127,21 @@ function checkAnswer(ansNumSelected, quizArrayIndex) {
     deleteQuestion();
     quizArrayIndex++;
     displayQuestion(quizArrayIndex);
-    console.log("new quiz"+quizArrayIndex);
+    console.log("new quiz" + quizArrayIndex);
 }
 // Function for last question
-function endQuiz () {
-        localStorage.setItem("Final Score", timeLeft);
-        deleteQuestion();
-    if(timeLeft === 0) {
-        quizSummary.children[0].textContent = "Times Up!";
-    } else {
-        timerCount.textContent = localStorage.getItem("Final Score");
-        quizSummary.children[0].textContent = "All Done!";
-    }
+function endQuiz() {
+    localStorage.setItem("Final Score", timeLeft);
+    stopTimer();
+    deleteQuestion();
+    quizStart.setAttribute("style", "display:block");
+    startBttn.setAttribute("style", "display:none");
+    quizTitle.textContent = "All Done!";
+    quizInfo.textContent = "Give your initials for your high score";
+    highScoreCapture.setAttribute("style", "display:block");
+    
 }
+
 //Include persistent storage for end result
 
 //Function to show score and capture name, and persist in local storage

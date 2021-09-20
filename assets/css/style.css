@@ -1,0 +1,20 @@
+* {
+    font-family: helvetica, sans-serif; 
+    padding: 2px;
+}
+header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    text-align: center;
+}
+.timer {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+#highScoreSubmit {
+    display: none;
+}
