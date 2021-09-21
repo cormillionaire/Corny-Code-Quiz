@@ -147,9 +147,10 @@ function endQuiz() {
 //Include persistent storage for end result
 storeScore.addEventListener("click", function (event) {
     event.preventDefault();
-    let userName = document.querySelector("#last-name").value;
+    let userName = document.querySelector("#initials").value.trim();
     var allScores = JSON.parse(localStorage.getItem("allScores"));
-    if (allScores == null) { allScores = []; 
+    if (allScores == null) {
+        allScores = [];
     }
     localStorage.setItem("Initials", userName);
     var userScore = {
