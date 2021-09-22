@@ -8,30 +8,30 @@ let quizAnswer = document.querySelector('.answers');
 let startBttn = document.querySelector(".start-button");
 let highScoreCapture = document.querySelector('#highScoreSubmit');
 let storeScore = document.querySelector('#intialsSubmit');
-let timeLeft = 20;
+let timeLeft;
 let timeInterval;
 
 //Question answer objects
 let quiz1 = {
-    question: 'How many?',
-    answers: ["correct", "1wrong1", "1wrong2", "1wrong3"],
+    question: 'What CSS selector do you use to get an element by "id"?',
+    answers: ["#", ".", "*", ":"],
     answerCorrect: 0
 }
 let quiz2 = {
-    question: 'second one?',
-    answers: ["2wrong1", "2wrong2", "2wrong3", "2correct"],
+    question: 'How many parameters can you have in a function?',
+    answers: ["0", "1", "As many as you want", "All of the above"],
     answerCorrect: 3
 }
 let quiz3 = {
-    question: 'third one?',
-    answers: ["3wrong1", "3wrong2", "3wrong3", "3correct"],
-    answerCorrect: 3
+    question: 'How do you declare an array in JavaScript?',
+    answers: ["{}", "()", "[]", "<>"],
+    answerCorrect: 2
 }
 
 let quiz4 = {
-    question: 'fourth one?',
-    answers: ["4wrong1", "4wrong2", "4correct", "4wrong3"],
-    answerCorrect: 2
+    question: 'What does CSS stand for?',
+    answers: ["Cansei de Ser Sexy", "Centralized Standard Style", "Conforming Style System", "Cascading Style Sheets"],
+    answerCorrect: 3
 }
 
 let quizObjectArray = [quiz1, quiz2, quiz3, quiz4]
@@ -41,31 +41,30 @@ let quizObjectArray = [quiz1, quiz2, quiz3, quiz4]
 function timer() {
     timeInterval = setInterval(function () {
         // As long as the `timeLeft` is greater than 1
-        if (timeLeft >= 0) {
-            timerCount.textContent = timeLeft;
+        if (timeLeft > 0) {
             timeLeft--;
+            timerCount.textContent = timeLeft;
             // If timer reaches 0 before end of quiz, throw failure message to start over
         } else {
-            clearInterval(timeInterval);
-            deleteQuestion();
-            quizStart.setAttribute("style", "display:block");
-            quizTitle.textContent = "Times Up!";
-            quizInfo.textContent = "You weren't able to finish on time. You should try again."
+            timesUp();
         }
     }, 1000);
-    console.log("timer running")
-    console.log(timeLeft)
 }
 
-function stopTimer() {
+function timesUp() {
     clearInterval(timeInterval);
+    deleteQuestion();
+    quizStart.setAttribute("style", "display:block");
+    quizTitle.textContent = "Times Up!";
+    quizInfo.textContent = "You weren't able to finish on time. You should try again."
+    highScoreCapture.setAttribute("style", "display:none");
 }
 
 function startQuiz() {
     //Hide quiz start
     quizStart.setAttribute("style", "display:none");
+    timeLeft = 20;
     timer();
-    console.log("start quiz running")
     //Show random question/answer combo on page
     displayQuestion(0);
 }
@@ -87,6 +86,10 @@ function deleteQuestion() {
 }
 
 function displayQuestion(quizArrayIndex) {
+    if (quizArrayIndex === quizObjectArray.length) {
+        endQuiz();
+        return;
+    } 
     let quiz = quizObjectArray[quizArrayIndex];
     quizQuestion.textContent = quiz.question;
     for (var i = 0; i < quiz.answers.length; i++) {
@@ -106,12 +109,8 @@ function displayQuestion(quizArrayIndex) {
 
 //Function to find and state and store correct or wrong
 function checkAnswer(ansNumSelected, quizArrayIndex) {
-    if (quizArrayIndex === quizObjectArray.length - 1) {
-        console.log("quiz#" + quizArrayIndex)
-        console.log("num" + quizObjectArray.length)
-        endQuiz();
-        return;
-    }
+    console.log("");
+    console.log("user selected"+ ansNumSelected);
     //take in question
     let quiz = quizObjectArray[quizArrayIndex];
     console.log("quiz answer" + quiz.answerCorrect);
@@ -121,20 +120,24 @@ function checkAnswer(ansNumSelected, quizArrayIndex) {
         document.querySelector("#result").innerHTML = "<hr> Correct!";
     } else {
         document.querySelector("#result").innerHTML = "<hr> Wrong!";
-        timeLeft = timeLeft - 10;
+        timeLeft = timeLeft - 5;
         timerCount.textContent = timeLeft;
     }
     //local storage for time and output score
-    console.log("timeleft: " + timeLeft)
     deleteQuestion();
     quizArrayIndex++;
     displayQuestion(quizArrayIndex);
     console.log("new quiz" + quizArrayIndex);
+    if (timeLeft <= 0) {
+        timesUp();
+        timeLeft = 0;
+        timerCount.textContent = timeLeft;
+    }
 }
 // Function for last question
 function endQuiz() {
+    clearInterval(timeInterval);
     localStorage.setItem("Final Score", timeLeft);
-    stopTimer();
     deleteQuestion();
     quizStart.setAttribute("style", "display:block");
     startBttn.setAttribute("style", "display:none");

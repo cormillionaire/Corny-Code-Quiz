@@ -9,15 +9,16 @@
 
 <body>
     <header>
-        <div class="quizNav"><a href src="../index.html">Back to Quiz</a></div>
+        <div class="quizNav"><a href= "../index.html">Back to Quiz</a></div>
     </header>
 
     <main>
-        <section>
+        <section id="highScores">
             <h2 id="highscoreResults">Highscores</h2>
+            <h3 id="noScore"></h3>
             <ul class="scores"></ul>
             <div id="scoreActions">
-                <button id="quiz" href = "../index.html">Go Back</button>
+                <button id="quiz" onclick="window.location.href='../index.html'">Go Back</button>
                 <button id="clearScores">Clear Scores</button>
             </div>
         </section>

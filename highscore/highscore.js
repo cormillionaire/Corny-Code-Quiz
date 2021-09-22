@@ -1,4 +1,5 @@
 let highscoresList = document.querySelector('.scores');
+let noScore = document.querySelector('#noScore');
 let clearScore = document.querySelector('#clearScores');
 
 function scoreRender() {
@@ -6,6 +7,8 @@ function scoreRender() {
     let allScores = JSON.parse(localStorage.getItem("allScores"));
     if (allScores === null){
         allScores = [];
+        highscoresList.innerHTML = "";
+        noScore.textContent = "No scores yet. Go quiz.";
     }
     allScores.sort(compare);
     //cycle through each item in the array and publish the line to the page
@@ -32,4 +35,5 @@ scoreRender();
 
 clearScore.addEventListener("click", function () {
     localStorage.clear();
+    scoreRender();
 });
