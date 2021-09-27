@@ -1,5 +1,5 @@
 # Corny-Code-Quiz
-![alt text](./images/coding quiz.PNG)
+![alt text](./images/coding%20quiz.PNG)
 
 This is a quick coding quiz to highlight a few things we've learned so far in the bootcamp. You can keep track of your score. 
 
