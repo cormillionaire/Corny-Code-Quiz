@@ -32,7 +32,7 @@ THEN I can save my initials and my score
 Javascript
 
 ## Resources
-https://stackoverflow.com/questions/19635077/adding-objects-to-array-in-localstorage
-https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
-https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link
-https://www.amp-what.com/unicode/search/star
+* https://stackoverflow.com/questions/19635077/adding-objects-to-array-in-localstorage
+* https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
+* https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link
+* https://www.amp-what.com/unicode/search/star
