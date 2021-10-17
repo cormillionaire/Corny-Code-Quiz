@@ -7,6 +7,7 @@ As for the styling, I showed off a few skills we learned like using css variable
 
 ![alt text](./images/coding%20quiz.PNG)
 
+![alt text](./images/code-quiz-question.PNG)
 
 ## User Story
 AS A coding boot camp student
